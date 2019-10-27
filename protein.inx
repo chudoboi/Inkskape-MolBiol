@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension>
+	<_name>protein</_name>
+	<id>MolBiol.protein</id>
+
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<dependency type="executable" location="extensions">simpletransform.py</dependency>
+	<dependency type="execsutable" location="extensions">protein.py</dependency>
+
+  <param name="tab" type="notebook">
+    <page name="rectangular" _gui-text="Rectangular">
+			<param name="rec_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
+      <param name="rec_width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
+      <param name="rec_color" type="enum" _gui-text="Color:">
+        <_item value="color_red">Red</_item>
+        <_item value="color_green">Green</_item>
+        <_item value="color_yellow">Yellow</_item>
+        <_item value="color_orange">Orange</_item>
+      </param>
+      <param name="rec_alpha" type="int" min="0" max="100" _gui-text="Opacity(%):">0</param>
+		</page>
+		<page name="oval" _gui-text="Oval">
+			<param name="oval_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
+			<param name="oval_width" type="int" min="1" max="1000" _gui-text="Width:">255</param>
+		</page>
+    <page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param>
+    </page>
+  </param>
+
+  <effect>
+    <object-type>all</object-type>
+      <effects-menu>
+        <submenu _name="MolBiol"/>
+      </effects-menu>
+  </effect>
+
+	<script>
+		<command reldir="extensions" interpreter="python">protein.py</command>
+	</script>
+</inkscape-extension>
