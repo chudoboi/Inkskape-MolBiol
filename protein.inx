@@ -11,14 +11,11 @@
     <page name="rectangular" _gui-text="Rectangular">
 			<param name="rec_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
       <param name="rec_width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
-      <param name="rec_color" type="enum" _gui-text="Color:">
-        <_item value="color_red">Red</_item>
-        <_item value="color_green">Green</_item>
-        <_item value="color_yellow">Yellow</_item>
-        <_item value="color_orange">Orange</_item>
-      </param>
-      <param name="rec_alpha" type="int" min="0" max="100" _gui-text="Opacity(%):">0</param>
-		</page>
+			<param name="name" type="notebook">
+          <page name="page_1" gui-text="Protein color:">
+              <param name="color" type="color"></param>
+          </page></param>
+    </page>
 		<page name="oval" _gui-text="Oval">
 			<param name="oval_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
 			<param name="oval_width" type="int" min="1" max="1000" _gui-text="Width:">255</param>
