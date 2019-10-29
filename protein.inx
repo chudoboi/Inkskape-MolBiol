@@ -8,7 +8,7 @@
 	<dependency type="execsutable" location="extensions">protein.py</dependency>
 
   <param name="tab" type="notebook">
-    <page name="rectangular" _gui-text="Rectangular">
+    <page name="rectangle" _gui-text="Rectangular">
 			<param name="rec_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
       <param name="rec_width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
 			<param name="name" type="notebook">
@@ -19,6 +19,10 @@
 		<page name="oval" _gui-text="Oval">
 			<param name="oval_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
 			<param name="oval_width" type="int" min="1" max="1000" _gui-text="Width:">255</param>
+			<param name="name" type="notebook">
+          <page name="page_1" gui-text="Protein color:">
+              <param name="color" type="color"></param>
+          </page></param>
 		</page>
     <page name="help" _gui-text="Help">
       <_param name="help_text" type="description">помогите</_param>
