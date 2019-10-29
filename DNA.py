@@ -23,7 +23,7 @@ class DNA(inkex.Effect):
             settings = json.load(inp)
 
         python3_path = settings['python3_path']
-        tempfilename = "dna.svg"
+        tempfilename = 'dna.svg'
 
         vals = [python3_path, "dirty_hack.py", "--name", tempfilename]
         for key, value in self.options.__dict__.items():
