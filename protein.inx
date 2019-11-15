@@ -7,27 +7,35 @@
 	<dependency type="executable" location="extensions">simpletransform.py</dependency>
 	<dependency type="execsutable" location="extensions">protein.py</dependency>
 
-  <param name="tab" type="notebook">
+  <_param name="tab" type="notebook">
     <page name="rectangle" _gui-text="Rectangular">
-			<param name="rec_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
-      <param name="rec_width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
-			<param name="name" type="notebook">
-          <page name="page_1" gui-text="Protein color:">
-              <param name="color" type="color"></param>
-          </page></param>
+			<param name="width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
+			<param name="height" type="int" min="1" max="1000" _gui-text="Height:">150</param>
+			<param name="line_width" type="float" min="0.01" max="100" _gui-text="Line width:">10</param>
+      <_param name="name" type="notebook">
+          <page name="page_1" gui-text="Line color:">
+              <param name="line_color" type="color"></param>
+          </page>
+					<page name="page_2" gui-text="Fill color:">
+							<param name="fill_color" type="color"></param>
+					</page></_param>
     </page>
 		<page name="oval" _gui-text="Oval">
-			<param name="oval_height" type="int" min="1" max="1000" _gui-text="Height:">200</param>
-			<param name="oval_width" type="int" min="1" max="1000" _gui-text="Width:">255</param>
-			<param name="name" type="notebook">
-          <page name="page_1" gui-text="Protein color:">
-              <param name="color" type="color"></param>
-          </page></param>
-		</page>
+			<param name="width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
+			<param name="height" type="int" min="1" max="1000" _gui-text="Height:">150</param>
+			<param name="line_width" type="float" min="0.01" max="100" _gui-text="Line width:">10</param>
+      <_param name="name" type="notebook">
+          <page name="page_1" gui-text="Line color:">
+              <param name="line_color" type="color"></param>
+          </page>
+					<page name="page_2" gui-text="Fill color:">
+							<param name="fill_color" type="color"></param>
+					</page></_param>
+    </page>
     <page name="help" _gui-text="Help">
       <_param name="help_text" type="description">помогите</_param>
     </page>
-  </param>
+  </_param>
 
   <effect>
     <object-type>all</object-type>

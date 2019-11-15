@@ -7,19 +7,24 @@
 	<dependency type="executable" location="extensions">simpletransform.py</dependency>
   <dependency type="executable" location="extensions">DNA.py</dependency>
 
+	<_param name="tab" type="notebook">
 		<page name="parameters" _gui-text="Parameters">
 			<param name="width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
 			<param name="num_of_coils" type="int" min="1" max="100" _gui-text="Number of coils:">3</param>
-			<param name="name" type="notebook">
+			<_param name="name" type="notebook">
 					<page name="page_1" gui-text="Color of strand 1:">
 							<param name="color1" type="color"></param>
 					</page>
 					<page name="page_2" gui-text="Color of strand 2:">
 							<param name="color2" type="color"></param>
 					</page>
-			</param>
+			</_param>
 			<param name="line_width" type="float" min="0.01" max="100" _gui-text="Line width:">20</param>
 		</page>
+		<page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param>
+    </page>
+	</_param>
 
 	<effect>
 		<object-type>all</object-type>
