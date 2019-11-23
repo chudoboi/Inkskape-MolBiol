@@ -1,6 +1,8 @@
 import argparse
 import cairo
+import math
 
+#for dna.py
 def draw_dna(width, coils, color1, color2, line_width):
     height = width * 1.3 / 2
 
@@ -55,13 +57,14 @@ def draw_dna(width, coils, color1, color2, line_width):
             coils = coils - 1
 
 
-def draw_rectangle(width, height, line_width, line_color, fill_color):
+#rectangle?
+def draw_protein(width, height, line_width, line_color, fill_color):
     fill_r, line_r = fill_color[0] / 255, line_color[0] / 255
     fill_g, line_g = fill_color[1] / 255, line_color[1] / 255
     fill_b, line_b = fill_color[2] / 255, line_color[2] / 255
     fill_a, line_a = fill_color[3] / 255, line_color[3] / 255
 
-    with cairo.SVGSurface("rectangle.svg", 4*line_width+width, 4*line_width+height) as surface:
+    with cairo.SVGSurface("protein.svg", 4*line_width+width, 4*line_width+height) as surface:
         context = cairo.Context(surface)
         context.set_source_rgba(fill_r, fill_g, fill_b, fill_a)
         context.rectangle(line_width, line_width, line_width+width, line_width+height)
@@ -71,6 +74,72 @@ def draw_rectangle(width, height, line_width, line_color, fill_color):
         context.set_source_rgba(line_r,line_g, line_b, line_a)
         context.stroke()
 
+#for plasmid_bb.py
+def draw_plasmid_bb(line_width, bb_radius, bb_color):
+    r, g = bb_color[0]/255, bb_color[1]/255
+    b, a = bb_color[2]/255, bb_color[3]/255
+    height = (bb_radius+line_width)*2
+    width = (bb_radius+line_width)*2
+
+    with cairo.SVGSurface("plasmid_bb.svg", width, height)  as surface:
+        context = cairo.Context(surface)
+
+        context.set_line_width(line_width)
+        context.set_source_rgba(r, g, b, a)
+        context.arc(bb_radius+line_width, bb_radius+line_width, bb_radius, 0, 2*math.pi)
+        context.stroke()
+
+#for plasmid_brick.py
+def draw_plasmid_brick(brick_type, brick_width, bb_radius, brick_share, brick_color):
+    r, g = brick_color[0]/255, brick_color[1]/255
+    b, a = brick_color[2]/255, brick_color[3]/255
+    s = bb_radius + brick_width
+
+    if brick_type == 0:
+        height = (bb_radius+brick_width)*2
+        width = (bb_radius+brick_width)*2
+        angle = 2*math.pi * brick_share / 100
+        with cairo.SVGSurface("plasmid_brick.svg", width, height)  as surface:
+            context = cairo.Context(surface)
+
+            context.set_line_width(brick_width)
+            context.set_source_rgba(r, g, b, a)
+            context.arc(s, s, bb_radius, 0, angle)
+            context.stroke()
+    if brick_type == 1:
+        height = bb_radius * 2 + brick_width * 2.5
+        width = bb_radius * 2 + brick_width * 2.5
+        angle = -2 * math.pi * brick_share / 100
+        with cairo.SVGSurface("plasmid_brick.svg", width, height)  as surface:
+            context = cairo.Context(surface)
+
+            context.set_line_width(brick_width)
+            context.set_source_rgba(r, g, b, a)
+            context.arc(s, s, bb_radius, angle, 0)
+            context.stroke()
+
+            context.move_to(s + bb_radius + brick_width * 0.9, s)
+            context.line_to(s + bb_radius, s + brick_width / 1.5)
+            context.line_to(s + bb_radius - brick_width * 0.9, s)
+            context.line_to(s + bb_radius + brick_width * 0.9, s)
+            context.fill()
+    if brick_type == 2:
+        angle = 2 * math.pi * brick_share / 100
+        height = bb_radius*2 + brick_width * 2.5
+        width = bb_radius*2 + brick_width * 2.5
+        with cairo.SVGSurface("plasmid_brick.svg", width, height)  as surface:
+            context = cairo.Context(surface)
+
+            context.set_line_width(brick_width)
+            context.set_source_rgba(r, g, b, a)
+            context.arc(s, s, bb_radius, 0, angle)
+            context.stroke()
+
+            context.move_to(s + bb_radius + brick_width * 0.9, s)
+            context.line_to(s + bb_radius, s - brick_width / 1.5)
+            context.line_to(s + bb_radius - brick_width * 0.9, s)
+            context.line_to(s + bb_radius + brick_width * 0.9, s)
+            context.fill()
 
 def rgba_color(param):
     cols = [int(x) for x in param.split("@")]
@@ -87,14 +156,24 @@ parser_dna.add_argument('--color1', type=rgba_color, required=True)
 parser_dna.add_argument('--color2', type=rgba_color, required=True)
 parser_dna.add_argument('--line_width', type=float, required=True)
 
-parser_rectangle = subparsers.add_parser('rectangle.svg', help='draw a rectangle')
+parser_rectangle = subparsers.add_parser('protein.svg', help='draw a protein')
 parser_rectangle.add_argument("--width", type=int, required=True)
 parser_rectangle.add_argument("--height", type=int, required=True)
 parser_rectangle.add_argument("--line_width", type=float, required=True)
 parser_rectangle.add_argument("--line_color", type=rgba_color, required=True)
 parser_rectangle.add_argument("--fill_color", type=rgba_color, required=True)
 
+parser_pl_bb = subparsers.add_parser('plasmid_bb.svg', help='draw a plasmid backbone')
+parser_pl_bb.add_argument('--line_width', type=float, required=True)
+parser_pl_bb.add_argument('--bb_radius', type=int, required=True)
+parser_pl_bb.add_argument('--bb_color', type=rgba_color, required=True)
 
+parser_pl_brick = subparsers.add_parser('plasmid_brick.svg', help='draw an element of my plasmid')
+parser_pl_brick.add_argument('--brick_type', type=int, required=True)
+parser_pl_brick.add_argument('--bb_radius', type=int, required=True)
+parser_pl_brick.add_argument('--brick_width', type=float, required=True)
+parser_pl_brick.add_argument('--brick_share', type=int, required=True)
+parser_pl_brick.add_argument('--brick_color', type=rgba_color, required=True)
 
 #parser_circle = subparsers.add_parser("circle", help="draw a circle")
 #parser_circle.add_argument("--radius", type=float, required=True)
@@ -110,6 +189,12 @@ if args.figure_name == "dna.svg":
 
 elif args.figure_name == "rectangle.svg":
     draw_rectangle(args.width, args.height, args.line_width, args.line_color, args.fill_color)
+
+elif args.figure_name == "plasmid_bb.svg":
+    draw_plasmid_bb(args.line_width, args.bb_radius, args.bb_color)
+elif args.figure_name == "plasmid_brick.svg":
+     draw_plasmid_brick(args.brick_type, args.brick_width, args.bb_radius, args.brick_share, args.brick_color)
+
 else:
     print("Wrong figure name")
     exit(1)
