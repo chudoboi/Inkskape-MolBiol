@@ -2,7 +2,7 @@ import argparse
 import cairo
 import math
 
-#for dna.py
+#dna.py
 def draw_dna(width, coils, color1, color2, line_width):
     height = width * 1.3 / 2
 
@@ -74,7 +74,7 @@ def draw_protein(width, height, line_width, line_color, fill_color):
         context.set_source_rgba(line_r,line_g, line_b, line_a)
         context.stroke()
 
-#for plasmid_bb.py
+#plasmid_bb.py
 def draw_plasmid_bb(line_width, bb_radius, bb_color):
     r, g = bb_color[0]/255, bb_color[1]/255
     b, a = bb_color[2]/255, bb_color[3]/255
@@ -89,7 +89,7 @@ def draw_plasmid_bb(line_width, bb_radius, bb_color):
         context.arc(bb_radius+line_width, bb_radius+line_width, bb_radius, 0, 2*math.pi)
         context.stroke()
 
-#for plasmid_brick.py
+#plasmid_brick.py
 def draw_plasmid_brick(brick_type, brick_width, bb_radius, brick_share, brick_color):
     r, g = brick_color[0]/255, brick_color[1]/255
     b, a = brick_color[2]/255, brick_color[3]/255
@@ -141,6 +141,42 @@ def draw_plasmid_brick(brick_type, brick_width, bb_radius, brick_share, brick_co
             context.line_to(s + bb_radius + brick_width * 0.9, s)
             context.fill()
 
+#circular_dna.py
+def draw_circular_dna(radius_out, radius_in, line_width, color, num, base_width):
+    height = (radius_out + line_width) * 2
+    width = (radius_out + line_width) * 2
+    center = line_width + radius_out
+    r, g = color[0]/255, color[1]/255
+    b, a = color[2]/255, color[3]/255
+
+    with cairo.SVGSurface("circular_dna.svg", width, height)  as surface:
+        context = cairo.Context(surface)
+        context.set_line_width(line_width)
+        context.set_source_rgba(r, g, b, a)
+        context.arc(center, center, radius_out, 0, 2*math.pi)
+        context.stroke()
+
+        context.arc(center, center, radius_in, 0, 2*math.pi)
+        context.stroke()
+
+        context.set_line_width(line_width / 2)
+        if num != 0:
+            step = 360/num
+            degrees = 0
+            for i in range(num):
+                radians = math.radians(degrees)
+                cos = math.cos(radians)
+                sin = math.sin(radians)
+                x_out, y_out = radius_out * cos + center, radius_out * sin + center
+                x_in, y_in = radius_in * cos + center, radius_in * sin + center
+
+                context.move_to(x_in, y_in)
+                context.line_to(x_out, y_out)
+                context.stroke()
+
+                degrees += step
+
+
 def rgba_color(param):
     cols = [int(x) for x in param.split("@")]
     return cols
@@ -175,6 +211,14 @@ parser_pl_brick.add_argument('--brick_width', type=float, required=True)
 parser_pl_brick.add_argument('--brick_share', type=int, required=True)
 parser_pl_brick.add_argument('--brick_color', type=rgba_color, required=True)
 
+parser_circ_dna = subparsers.add_parser('circular_dna.svg', help = 'draw a circular DNA')
+parser_circ_dna.add_argument('--radius_out', type=int, required=True)
+parser_circ_dna.add_argument('--radius_in', type=int, required=True)
+parser_circ_dna.add_argument('--line_width', type=float, required=True)
+parser_circ_dna.add_argument('--color', type=rgba_color, required=True)
+parser_circ_dna.add_argument('--num', type=int, required=True)
+parser_circ_dna.add_argument('--base_width', type=float, required=True)
+
 #parser_circle = subparsers.add_parser("circle", help="draw a circle")
 #parser_circle.add_argument("--radius", type=float, required=True)
 
@@ -193,7 +237,9 @@ elif args.figure_name == "rectangle.svg":
 elif args.figure_name == "plasmid_bb.svg":
     draw_plasmid_bb(args.line_width, args.bb_radius, args.bb_color)
 elif args.figure_name == "plasmid_brick.svg":
-     draw_plasmid_brick(args.brick_type, args.brick_width, args.bb_radius, args.brick_share, args.brick_color)
+    draw_plasmid_brick(args.brick_type, args.brick_width, args.bb_radius, args.brick_share, args.brick_color)
+elif args.figure_name == 'circular_dna.svg':
+    draw_circular_dna(args.radius_out, args.radius_in, args.line_width, args.color, args.num, args.base_width)
 
 else:
     print("Wrong figure name")
