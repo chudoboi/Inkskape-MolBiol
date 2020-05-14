@@ -1,8 +1,17 @@
+import sys
+
+sys.path.extend([u'C:\\Users\\user\\Anaconda3\\python.exe',
+'C:\\Users\\user\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe'])
+
 import argparse
 import cairo
 import math
+import numpy as np
 
-#for dna.py
+with open("C:/Users/user/AppData/Roaming/inkscape/extensions/log.txt", "a") as out:
+    out.write("dirty_hack opened\n")
+
+#dna.py
 def draw_dna(width, coils, color1, color2, line_width):
     height = width * 1.3 / 2
 
@@ -74,72 +83,91 @@ def draw_protein(width, height, line_width, line_color, fill_color):
         context.set_source_rgba(line_r,line_g, line_b, line_a)
         context.stroke()
 
-#for plasmid_bb.py
-def draw_plasmid_bb(line_width, bb_radius, bb_color):
-    r, g = bb_color[0]/255, bb_color[1]/255
-    b, a = bb_color[2]/255, bb_color[3]/255
-    height = (bb_radius+line_width)*2
-    width = (bb_radius+line_width)*2
+#plasmid_bb.py
+def draw_plasmid_fraction(r_type, r_share, r_width, fill_color):
+    with open("C:/Users/user/AppData/Roaming/inkscape/extensions/log.txt", "a") as out:
+        out.write(r_type+' '+r_share+' '+r_width+' '+fill_color)
+    f_color = list(np.array(fill_color)/255)
+    height = 200 + r_width*2.5
+    width = 200*2 +r_width*2.5
+    s = 100+r_width
 
-    with cairo.SVGSurface("plasmid_bb.svg", width, height)  as surface:
+    if r_type == 0:
+        angle = 2*math.pi * r_share / 100
+        with cairo.SVGSurface("plasmid_fraction.svg", width, height)  as surface:
+            context = cairo.Context(surface)
+            context.set_line_width(r_width)
+            context.set_source_rgba(f_color[0], f_color[1], f_color[2], f_color[3])
+            context.arc(r_width+100, 100+r_width, 100, 0, angle)
+            context.stroke()
+
+    if r_type == 1:
+        angle = -2*math.pi * r_share / 100
+        with cairo.SVGSurface("plasmid_fraction.svg", width, height)  as surface:
+            context = cairo.Context(surface)
+
+            context.set_line_width(r_width)
+            context.set_source_rgba(r, g, b, a)
+            context.arc(s, s, 100, angle, 0)
+            context.stroke()
+
+            context.move_to(s+100+r_width*0.7, s)
+            context.line_to(s+100, s+r_width/2)
+            context.line_to(s+100-r_width*0.7, s)
+            context.line_to(s+100+r_width*0.7, s)
+            context.fill()
+
+    if r_type == 2:
+        angle = 2*math.pi * r_share / 100
+        with cairo.SVGSurface("plasmid_fraction.svg", width, height)  as surface:
+            context = cairo.Context(surface)
+
+            context.set_line_width(r_width)
+            context.set_source_rgba(r, g, b, a)
+            context.arc(s, s, 100, 0, angle)
+            context.stroke()
+
+            context.move_to(s+100+r_width*0.7, s)
+            context.line_to(s+100, s-r_width/2)
+            context.line_to(s+100-r_width*0.7, s)
+            context.line_to(s+100+r_width*0.7, s)
+            context.fill()
+
+#circular_dna.py
+def draw_circular_dna(radius_out, radius_in, line_width, color, num, base_width):
+    height = (radius_out + line_width) * 2
+    width = (radius_out + line_width) * 2
+    center = line_width + radius_out
+    r, g = color[0]/255, color[1]/255
+    b, a = color[2]/255, color[3]/255
+
+    with cairo.SVGSurface("circular_dna.svg", width, height)  as surface:
         context = cairo.Context(surface)
-
         context.set_line_width(line_width)
         context.set_source_rgba(r, g, b, a)
-        context.arc(bb_radius+line_width, bb_radius+line_width, bb_radius, 0, 2*math.pi)
+        context.arc(center, center, radius_out, 0, 2*math.pi)
         context.stroke()
 
-#for plasmid_brick.py
-def draw_plasmid_brick(brick_type, brick_width, bb_radius, brick_share, brick_color):
-    r, g = brick_color[0]/255, brick_color[1]/255
-    b, a = brick_color[2]/255, brick_color[3]/255
-    s = bb_radius + brick_width
+        context.arc(center, center, radius_in, 0, 2*math.pi)
+        context.stroke()
 
-    if brick_type == 0:
-        height = (bb_radius+brick_width)*2
-        width = (bb_radius+brick_width)*2
-        angle = 2*math.pi * brick_share / 100
-        with cairo.SVGSurface("plasmid_brick.svg", width, height)  as surface:
-            context = cairo.Context(surface)
+        context.set_line_width(base_width)
+        if num != 0:
+            step = 360/num
+            degrees = 0
+            for i in range(num):
+                radians = math.radians(degrees)
+                cos = math.cos(radians)
+                sin = math.sin(radians)
+                x_out, y_out = radius_out * cos + center, radius_out * sin + center
+                x_in, y_in = radius_in * cos + center, radius_in * sin + center
 
-            context.set_line_width(brick_width)
-            context.set_source_rgba(r, g, b, a)
-            context.arc(s, s, bb_radius, 0, angle)
-            context.stroke()
-    if brick_type == 1:
-        height = bb_radius * 2 + brick_width * 2.5
-        width = bb_radius * 2 + brick_width * 2.5
-        angle = -2 * math.pi * brick_share / 100
-        with cairo.SVGSurface("plasmid_brick.svg", width, height)  as surface:
-            context = cairo.Context(surface)
+                context.move_to(x_in, y_in)
+                context.line_to(x_out, y_out)
+                context.stroke()
 
-            context.set_line_width(brick_width)
-            context.set_source_rgba(r, g, b, a)
-            context.arc(s, s, bb_radius, angle, 0)
-            context.stroke()
+                degrees += step
 
-            context.move_to(s + bb_radius + brick_width * 0.9, s)
-            context.line_to(s + bb_radius, s + brick_width / 1.5)
-            context.line_to(s + bb_radius - brick_width * 0.9, s)
-            context.line_to(s + bb_radius + brick_width * 0.9, s)
-            context.fill()
-    if brick_type == 2:
-        angle = 2 * math.pi * brick_share / 100
-        height = bb_radius*2 + brick_width * 2.5
-        width = bb_radius*2 + brick_width * 2.5
-        with cairo.SVGSurface("plasmid_brick.svg", width, height)  as surface:
-            context = cairo.Context(surface)
-
-            context.set_line_width(brick_width)
-            context.set_source_rgba(r, g, b, a)
-            context.arc(s, s, bb_radius, 0, angle)
-            context.stroke()
-
-            context.move_to(s + bb_radius + brick_width * 0.9, s)
-            context.line_to(s + bb_radius, s - brick_width / 1.5)
-            context.line_to(s + bb_radius - brick_width * 0.9, s)
-            context.line_to(s + bb_radius + brick_width * 0.9, s)
-            context.fill()
 
 def rgba_color(param):
     cols = [int(x) for x in param.split("@")]
@@ -163,17 +191,19 @@ parser_rectangle.add_argument("--line_width", type=float, required=True)
 parser_rectangle.add_argument("--line_color", type=rgba_color, required=True)
 parser_rectangle.add_argument("--fill_color", type=rgba_color, required=True)
 
-parser_pl_bb = subparsers.add_parser('plasmid_bb.svg', help='draw a plasmid backbone')
-parser_pl_bb.add_argument('--line_width', type=float, required=True)
-parser_pl_bb.add_argument('--bb_radius', type=int, required=True)
-parser_pl_bb.add_argument('--bb_color', type=rgba_color, required=True)
+parser_pl_fract = subparsers.add_parser('plasmid_fraction.svg', help='draw a fraction of my plasmid')
+parser_pl_fract.add_argument('--r_type', type=int, required=True)
+parser_pl_fract.add_argument('--r_share', type=int, required=True)
+parser_pl_fract.add_argument('--r_width', type=float, required=True)
+parser_pl_fract.add_argument('--fill_color', type=rgba_color, required=True)
 
-parser_pl_brick = subparsers.add_parser('plasmid_brick.svg', help='draw an element of my plasmid')
-parser_pl_brick.add_argument('--brick_type', type=int, required=True)
-parser_pl_brick.add_argument('--bb_radius', type=int, required=True)
-parser_pl_brick.add_argument('--brick_width', type=float, required=True)
-parser_pl_brick.add_argument('--brick_share', type=int, required=True)
-parser_pl_brick.add_argument('--brick_color', type=rgba_color, required=True)
+parser_circ_dna = subparsers.add_parser('circular_dna.svg', help = 'draw a circular DNA')
+parser_circ_dna.add_argument('--radius_out', type=int, required=True)
+parser_circ_dna.add_argument('--radius_in', type=int, required=True)
+parser_circ_dna.add_argument('--line_width', type=float, required=True)
+parser_circ_dna.add_argument('--color', type=rgba_color, required=True)
+parser_circ_dna.add_argument('--num', type=int, required=True)
+parser_circ_dna.add_argument('--base_width', type=float, required=True)
 
 #parser_circle = subparsers.add_parser("circle", help="draw a circle")
 #parser_circle.add_argument("--radius", type=float, required=True)
@@ -181,6 +211,8 @@ parser_pl_brick.add_argument('--brick_color', type=rgba_color, required=True)
 
 
 args = parser.parse_args()
+with open("C:/Users/user/AppData/Roaming/inkscape/extensions/log.txt", "a") as out:
+    out.write("Blya2\n")
 
 #if args.figure_name == "circle":
 #    draw_circle(args.radius)
@@ -190,11 +222,15 @@ if args.figure_name == "dna.svg":
 elif args.figure_name == "rectangle.svg":
     draw_rectangle(args.width, args.height, args.line_width, args.line_color, args.fill_color)
 
-elif args.figure_name == "plasmid_bb.svg":
-    draw_plasmid_bb(args.line_width, args.bb_radius, args.bb_color)
-elif args.figure_name == "plasmid_brick.svg":
-     draw_plasmid_brick(args.brick_type, args.brick_width, args.bb_radius, args.brick_share, args.brick_color)
+elif args.figure_name == "plasmid_fraction.svg":
+    with open("C:/Users/user/AppData/Roaming/inkscape/extensions/log.txt", "a") as out:
+        out.write("figure_name\n")
+    draw_plasmid_fraction(args.r_type, args.r_share, args.r_width, args.fill_color)
+elif args.figure_name == 'circular_dna.svg':
+    draw_circular_dna(args.radius_out, args.radius_in, args.line_width, args.color, args.num, args.base_width)
 
 else:
+    with open("C:/Users/user/AppData/Roaming/inkscape/extensions/log.txt", "a") as out:
+        out.write("Blya\n")
     print("Wrong figure name")
     exit(1)

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension>
+	<_name>Viruses</_name>
+	<id>MolBiol.viruses</id>
+
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<dependency type="executable" location="extensions">simpletransform.py</dependency>
+	<dependency type="execsutable" location="extensions">mo_viruses.py</dependency>
+
+
+  <_param name="tab" type="notebook">
+    <page name="capsid_shape" _gui-text="Capsid">
+			<param name="cell_shape" type="optiongroup" _gui-text="Capsid shape:">
+				<option value="helix">helical</option>
+				<option value="icos">icosahedral</option>
+			</param>
+			<_param name="name" type="notebook">
+				<page name="capsid_color" gui-text="Capsid color:">
+					<param name="capsid_color" type="color"></param></page></_param>
+		</page>
+
+
+		<page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param></page>
+	</_param>
+
+
+  <effect>
+    <object-type>all</object-type>
+      <effects-menu>
+        <submenu _name="MolBiol">
+					<submenu _name="Model Organisms"/>
+				</submenu>
+      </effects-menu>
+  </effect>
+
+	<script>
+		<command reldir="extensions" interpreter="python">mo_viruses.py</command>
+	</script>
+</inkscape-extension>

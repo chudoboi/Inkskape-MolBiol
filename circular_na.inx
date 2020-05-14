@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension>
+	<_name>Circular nucleic acids</_name>
+	<id>MolBiol.circular_na</id>
+
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<dependency type="executable" location="extensions">simpletransform.py</dependency>
+	<dependency type="execsutable" location="extensions">circular_na.py</dependency>
+
+
+  <_param name="tab" type="notebook">
+    <page name="dna_circular" _gui-text="Circular nucleic acids">
+			<param name="coiled" type="optiongroup" _gui-text="Coiled?">
+				<option value="1">Yes</option>
+				<option value="0">No</option>
+			<param name="radius_out" type="int" min="1" max="2000" _gui-text="Radius of the exterior strand:">200</param>
+			<param name="radius_in" type="int" min="1" max="2000" _gui-text="Radius of the interior strand:">190</param>
+			<param name="line_width" type="float" min="0.01" max="100" _gui-text="Line width:">5.00</param>
+      <_param name="name" type="notebook">
+				<page name="color" gui-text="Color:">
+					<param name="color" type="color"></param></page></_param>
+			<param name="num" type="int" min="0" max="1000" _gui-text="Number of bases drawn:">0</param>
+			<param name="base_width" type="float" min="0" max="100" _gui-text="Width of lines representing bases:">0.00</param>
+		</page>
+
+		<page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param></page>
+	</_param>
+
+
+  <effect>
+    <object-type>all</object-type>
+      <effects-menu>
+        <submenu _name="MolBiol">
+				  <submenu _name='Nucleic acids'>
+				  <submenu _name='Structure'/></submenu></submenu>
+      </effects-menu>
+  </effect>
+
+	<script>
+		<command reldir="extensions" interpreter="python">circular_na.py</command>
+	</script>
+</inkscape-extension>

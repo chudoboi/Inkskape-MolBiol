@@ -13,7 +13,7 @@ def convert_to_cairo(num):
     return "{}@{}@{}@{}".format(red, green, blue, alpha)
 
 
-class Rectangle(inkex.Effect):
+class Protein(inkex.Effect):
     def __init__(self, settings_path="settings.json"):
         inkex.Effect.__init__(self)
         self.OptionParser.add_option('--tab')
@@ -33,7 +33,7 @@ class Rectangle(inkex.Effect):
             settings = json.load(inp)
 
         python3_path = settings['python3_path']
-        tempfilename = 'rectangle.svg'
+        tempfilename = 'protein.svg'
 
         vals = [os.path.abspath(python3_path), os.path.abspath("dirty_hack.py"), tempfilename]
         for key, value in self.options.__dict__.items():
@@ -65,5 +65,5 @@ class Oval(inkex.Effect):
 
 
 if __name__ == "__main__":
-    effect = Rectangle()
+    effect = Protein()
     effect.affect()

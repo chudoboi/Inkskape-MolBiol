@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension>
+	<_name>Mice</_name>
+	<id>MolBiol.mice</id>
+
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<dependency type="executable" location="extensions">simpletransform.py</dependency>
+	<dependency type="execsutable" location="extensions">mo_mice.py</dependency>
+
+  <_param name="tab" type="notebook">
+		<page name="body_color" gui-text="Body color:">
+			<param name="body_color" type="color"></param></page>
+
+		<page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param></page>
+	</_param>
+
+
+  <effect>
+    <object-type>all</object-type>
+      <effects-menu>
+        <submenu _name="MolBiol">
+					<submenu _name="Model Organisms"/>
+				</submenu>
+      </effects-menu>
+  </effect>
+
+	<script>
+		<command reldir="extensions" interpreter="python">mo_mice.py</command>
+	</script>
+</inkscape-extension>

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension>
-	<_name>Protein</_name>
-	<id>MolBiol.protein</id>
+	<_name>Lipids and lipid membranes</_name>
+	<id>MolBiol.lipids</id>
 
 	<dependency type="executable" location="extensions">inkex.py</dependency>
 	<dependency type="executable" location="extensions">simpletransform.py</dependency>
-	<dependency type="execsutable" location="extensions">protein.py</dependency>
+	<dependency type="execsutable" location="extensions">lipids_and_co.py</dependency>
 
-  <_param name="tab" type="notebook">
-    <page name="protein" _gui-text="Protein">
-			<param name="width" type="int" min="1" max="1000" _gui-text="Width:">200</param>
-			<param name="height" type="int" min="1" max="1000" _gui-text="Height:">150</param>
-			<param name="line_width" type="float" min="0.01" max="100" _gui-text="Line width:">10</param>
-      <_param name="name" type="notebook">
+
+	<_param name="tab" type="notebook">
+    <page name="main" _gui-text="Main parameters">
+	    <param name="dimensions" type="optiongroup" _gui-text="Number of rows shown:">
+			<param name="num_of_lips" type="int" min="1" max="1000" _gui-text="Number of lipids in a row:">50</param>
+
+			<_param name="name" type="notebook">
           <page name="page_1" gui-text="Stroke color:">
               <param name="line_color" type="color"></param>
           </page>
@@ -25,6 +26,12 @@
     </page>
   </_param>
 
+
+		<page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param></page>
+	</_param>
+
+
   <effect>
     <object-type>all</object-type>
       <effects-menu>
@@ -33,6 +40,6 @@
   </effect>
 
 	<script>
-		<command reldir="extensions" interpreter="python">protein.py</command>
+		<command reldir="extensions" interpreter="python">lipids_and_co.py</command>
 	</script>
 </inkscape-extension>
