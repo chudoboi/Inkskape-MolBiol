@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension>
+	<_name>Сircular map</_name>
+	<id>MolBiol.circ_na_map</id>
+
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<dependency type="executable" location="extensions">simpletransform.py</dependency>
+	<dependency type="execsutable" location="extensions">circ_na_map.py</dependency>
+
+	<_param name="tab" type="notebook">
+		<page name="parameters" _gui-text="Parameters">
+			<param name="r_type" type="optiongroup" _gui-text="Visualize region as:">
+				<option value="0">Plain brick</option>
+				<option value="1">Arrow clockwise</option>
+				<option value="2">Arrow anti-clockwise</item></option>
+		  <param name="r_share" type="int" min="1" max="100" _gui-text="Fraction (%):">10</param>
+			<param name="r_width" type="float" min="0.01" max="100" _gui-text="Width:">20</param>
+			<_param name="name" type="notebook">
+				<page name="fill_color" gui-text="Color:">
+					<param name="fill_color" type="color"/></page></_param></page>
+		<page name="help" _gui-text="Help">
+	      <_param name="help_text" type="description">помогите</_param></page>
+	</_param>
+
+  <effect>
+    <object-type>all</object-type>
+      <effects-menu>
+        <submenu _name="MolBiol">
+				  <submenu _name='Nucleic acids'>
+				  	<submenu _name='Mapping'/></submenu>
+				  </submenu>
+      </effects-menu>
+  </effect>
+
+	<script>
+		<command reldir="extensions" interpreter="python">circ_na_map.py</command>
+	</script>
+</inkscape-extension>
