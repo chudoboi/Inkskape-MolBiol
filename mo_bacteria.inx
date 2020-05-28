@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension>
+	<_name>Bacteria</_name>
+	<id>MolBiol.mo_bacteria</id>
+
+	<dependency type="executable" location="extensions">inkex.py</dependency>
+	<dependency type="executable" location="extensions">simpletransform.py</dependency>
+	<dependency type="execsutable" location="extensions">mo_bacteria.py</dependency>
+
+
+  <_param name="tab" type="notebook">
+    <page name="cell_body" _gui-text="Cell shape">
+			<param name="cell_shape" type="optiongroup" _gui-text="Cell shape:">
+				<option value="coccus">cocci</option>
+				<option value="bacilli">bacilli</option>
+				<option value="vibrios">vibrios</option>
+				<option value="spirilla">spirilla</option>
+				<option value="spirochaetes">spirochaetes</option>
+			</param>
+		</page>
+
+    <page name="colors" _gui-text="colors">
+			<_param name="name" type="notebook">
+				<page name="body_color" gui-text="Body color:">
+					<param name="body_color" type="color"></param></page>
+				<page name="page_2" gui-text="Body outline and appendages color:">
+							<param name="line_color" type="color"></param>
+					</page></_param></page>
+
+
+		<page name="help" _gui-text="Help">
+      <_param name="help_text" type="description">помогите</_param></page>
+	</_param>
+
+
+  <effect>
+    <object-type>all</object-type>
+      <effects-menu>
+        <submenu _name="MolBiol">
+					<submenu _name="Model organisms"/>
+				</submenu>
+      </effects-menu>
+  </effect>
+
+	<script>
+		<command reldir="extensions" interpreter="python">mo_bacteria.py</command>
+	</script>
+</inkscape-extension>
